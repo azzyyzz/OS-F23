@@ -1,0 +1,5 @@
+    1  whoami
+    2  ls /usr
+    3  hostname
+    4  history
+    5  history > ~/week01/ex2.txt
