@@ -1,0 +1,28 @@
+Calling fork in a loop for n times will create 2^n processes, because every process will have 2 states, either a child or a parent. We can check it by running the pstree command, which shows us the processes tree. If we look for ex3 using grep:
+	1. For n = 5 we will find:
+	|         |      |-code-+-bash---ex3-+-ex3-+-ex3-+-ex3-+-ex3---ex3
+        |         |      |      |            |     |     |     `-ex3
+        |         |      |      |            |     |     |-ex3---ex3
+        |         |      |      |            |     |     `-ex3
+        |         |      |      |            |     |-ex3-+-ex3---ex3
+        |         |      |      |            |     |     `-ex3
+        |         |      |      |            |     |-ex3---ex3
+        |         |      |      |            |     `-ex3
+        |         |      |      |            |-ex3-+-ex3-+-ex3---ex3
+        |         |      |      |            |     |     `-ex3
+        |         |      |      |            |     |-ex3---ex3
+        |         |      |      |            |     `-ex3
+        |         |      |      |            |-ex3-+-ex3---ex3
+        |         |      |      |            |     `-ex3
+        |         |      |      |            |-ex3---ex3
+        |         |      |      |            `-ex3
+
+	2. For n = 3 we will find:
+	|         |      |-code-+-bash---ex3-+-ex3-+-ex3---ex3
+        |         |      |      |            |     `-ex3
+        |         |      |      |            |-ex3---ex3
+        |         |      |      |            `-ex3
+
+As we can see for n=5 we have 2^5 or 32 processes, and for n=3 we have 2^3=8 processes. This shows that the number of processes will increase exponentially as we increase n.
+
+

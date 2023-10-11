@@ -1,0 +1,1 @@
+All of the subscribers are recieveing message correctly. But, I found out that that if we do not wait for the child process from the parent process, we can sometimes get random values. Also, if we do not use named pipes, it will be incorrect, because they last as long as process, while named pipes can last as long as the system is up.

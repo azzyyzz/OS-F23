@@ -1,0 +1,1 @@
+From the results we can see that the the time taken to print the result is significantly increased when we go beyond some number of threads used(100 in this case). From the results it also applies to the system calls execution time. On the other hand, results show that the amount of CPU time spen(user) is decreasing as we increase the number of threads.
