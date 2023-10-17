@@ -1,0 +1,1 @@
+From the results we can say that RR effectivness relies of quantum. Depending on how bing quantum time is, it can be whether effective as SJF, or as FCFS. RR is better if you want an adjastable average waiting time.

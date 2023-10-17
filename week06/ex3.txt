@@ -1,0 +1,1 @@
+From the results we can see that SJF is more optimal than FCFS. SJF tries to get the least average waiting, which subsequently leads to higher effectivness. It is better if multiple processes come to prcess simultaneously.

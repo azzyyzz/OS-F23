@@ -1,0 +1,2 @@
+1. If we decrease the TRI_BASE, we will have higher chance to get smaller number in our interval starting point.
+2. If we change all arriving times to 0, processes will be executed depending on their id-s, also we will have higher average waiting time.
