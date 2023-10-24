@@ -1,0 +1,5 @@
+Throughput: 150.97554 allocations per second	(Allocate First)
+Throughput: 54.70390 allocations per second	(Best Fit)
+Throughput: 54.49183 allocations per second	(Wors Fit)
+
+From the results we can see that Allocate First works faster than Best and Worst Fits. I think that this is because Best/Worst Fit needs to go through the whole array to find the most optimal, but Allocate First takes the first available, thus executing signficantly faster.
