@@ -7,6 +7,7 @@ gcc mmu.c -o mmu
 gcc pager.c -o pager
 
 ./pager $1 $2 &
+sleep 1
 
 PID=$(cat /tmp/ex2.pid)
 

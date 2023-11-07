@@ -1,0 +1,16 @@
+random:
+Hits: 96
+Misses: 904
+Hit Ratio: 9.60%
+
+nfu:
+Hits: 89
+Misses: 911
+Hit Ratio: 8.90%
+
+aging:
+Hits: 103
+Misses: 897
+Hit Ratio: 10.30%
+
+From the results we can see that among all 3, Aging algorithm has the most hits, meaning that it is the most effective amongst this 3 algorithms. On the second place we have the Random page selection, but I think only my results do not guarantee that ratio will always be the same, because it is working randomly we can not fully predict what will happen. Sometimes, there also is a chance that random selection will have 0 hits. It may be easy to implement, but it is not guaranteed to be effective. Moreover, I think that the choice of the algorithm should depend on the case in which it is used.

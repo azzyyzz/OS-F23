@@ -8,6 +8,7 @@
 #include<sys/mman.h>
 #include<fcntl.h>
 #include<signal.h>
+#include<limits.h>
     
 
 struct PTE {
@@ -15,16 +16,68 @@ struct PTE {
     int frame;
     bool dirty;
     int referenced;
+    int nfuCnt;
+    unsigned char agingCnt;
 };
 
 struct PTE* pageTable;
 char **RAM;
 char **disk;
+char *algo;
 int accessCnt = 0;
 int *isFree;
 
 pid_t pagerPID;
 int frames = 0, pages = 0;
+
+// Random page replacement
+int rrandom(struct PTE* pageTable) {
+    int vic = rand() % frames;
+    int ind;
+    for (int i = 0 ; i < pages; i ++) {
+        if (pageTable[i].frame == vic) {
+            return i;
+        }
+    }
+}
+
+// NFU page replacement
+int nfu(struct PTE* pageTable) {
+    int vic = -1, mn = INT_MAX;
+    for (int i = 0; i < pages; i ++) {
+        if (pageTable[i].frame != -1) {
+            if (pageTable[i].nfuCnt < mn) {
+                mn = pageTable[i].nfuCnt;
+                vic = i;
+            }
+        }
+    }
+    return vic;
+}
+
+// Aging page replacement
+int aging(struct PTE* pageTable) {
+    int vic = -1, mn = INT_MAX;
+    for (int i = 0; i < pages; i ++) {
+        if (pageTable[i].valid) {
+            pageTable[i].agingCnt = pageTable[i].agingCnt >> 1;
+            if (pageTable[i].referenced) {
+                pageTable[i].agingCnt |= (1 << 7);
+                pageTable[i].referenced = 0;
+            }
+        }
+    }
+
+    for (int i = 0; i < pages; i ++) {
+        if (pageTable[i].valid) {
+            if (pageTable[i].agingCnt < mn) {
+                mn = pageTable[i].agingCnt;
+                vic = i;
+            }
+        }
+    }
+    return vic;
+}
 
 void ramArray() {
     printf("RAM array\n");
@@ -66,33 +119,35 @@ void signalHandler(int sign) {
                 pageTable[load].referenced = 0;
                 pageTable[load].valid = true;
             } else {
-                int victim = rand() % frames;
-                int ind;
-                for (int i = 0 ; i < pages; i ++) {
-                    if (pageTable[i].frame == victim) {
-                        ind = i;
-                    }
+                int victim;
+                if (!strcmp(algo, "random")) {
+                    victim = rrandom(pageTable);
+                } else if (!strcmp(algo, "nfu")) {
+                    victim = nfu(pageTable);
+                } else {
+                    victim = aging(pageTable);
                 }
                 isFree[victim] = 0;
                 printf("We do not have free frames in RAM\n");
-                printf("Chose a random victim page %d\n", victim);
+                printf("Chose a random victim page %d using %s replacement\n", victim, algo);
                 printf("Replace/Evict it with page %d to be allocated to frame %d\n", load, victim);
                 printf("Copy data from the disk (page=%d) to RAM (frame=%d)\n", load, victim);
 
-                strcpy(RAM[victim], disk[load]);
+                strcpy(RAM[pageTable[victim].frame], disk[load]);
 
                 pageTable[load].dirty = false;
-                pageTable[load].frame = victim;
+                pageTable[load].frame = pageTable[victim].frame;
                 pageTable[load].referenced = 0;
                 pageTable[load].valid = true;
 
-                pageTable[ind].dirty = false;
-                pageTable[ind].frame = -1;
-                pageTable[ind].referenced = 0;
-                pageTable[ind].valid = false;
+                pageTable[victim].dirty = false;
+                pageTable[victim].frame = -1;
+                pageTable[victim].referenced = 0;
+                pageTable[victim].valid = false;
 
                 isFree[victim] = 1;
-                //accessCnt++;
+                accessCnt++;
+                printf("HEHEHEA\n");
             }
             accessCnt++;
             ramArray();
@@ -111,6 +166,7 @@ void signalHandler(int sign) {
 int main(int argc, char* argv[]) {
     pages = atoi(argv[1]);
     frames = atoi(argv[2]);
+    algo = argv[3];
 
     FILE *pid_file = fopen("/tmp/ex2.pid", "w");
     if (pid_file) {
@@ -139,6 +195,8 @@ int main(int argc, char* argv[]) {
         pageTable[i].frame = -1;
         pageTable[i].dirty = false;
         pageTable[i].referenced = 0;
+        pageTable[i].nfuCnt = 0;
+        pageTable[i].agingCnt = 0;
 
         printf("Page %d ---> valid=%d, frame=%d, dirty=%d, referenced=%d\n", i, pageTable[i].valid, pageTable[i].frame, pageTable[i].dirty, pageTable[i].referenced);
     }
