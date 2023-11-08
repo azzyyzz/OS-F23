@@ -144,9 +144,11 @@ void signalHandler(int sign) {
                 pageTable[victim].frame = -1;
                 pageTable[victim].referenced = 0;
                 pageTable[victim].valid = false;
+                pageTable[victim].agingCnt = 0;
+                pageTable[victim].nfuCnt = 0;
 
                 isFree[victim] = 1;
-                accessCnt++;
+                //accessCnt++;
                 printf("HEHEHEA\n");
             }
             accessCnt++;

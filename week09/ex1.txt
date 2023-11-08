@@ -1,12 +1,13 @@
 random:
-Hits: 96
-Misses: 904
-Hit Ratio: 9.60%
+Hits: 100
+Misses: 900
+Hit Ratio: 10.00%
 
 nfu:
-Hits: 89
-Misses: 911
-Hit Ratio: 8.90%
+Hits: 99
+Misses: 901
+Hit Ratio: 9.90%
+
 
 aging:
 Hits: 103
