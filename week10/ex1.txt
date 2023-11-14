@@ -1,0 +1,10 @@
+Question 1:
+Yes, the monitor.c program reported an event for myfile11.txt.
+The log entry "File /home/muhibullo/Desktop/os23/week10/fol1/myfile11.txt was modified."
+indicates that the program detected a modification in myfile11.txt.
+
+Question 2:
+No, the monitor.c program did not report an event for myfile13.txt.
+Symbolic links only reference the target file, and changes to the target file are not
+considered events for the symbolic link itself.
+

@@ -88,6 +88,7 @@ int main(int argc, char *argv[]) {
         if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
             char path[PATH_MAX];
             snprintf(path, sizeof(path), "%s/%s", argv[1], entry->d_name);
+            print_stat_info(path);
         }
     }
 
