@@ -28,7 +28,7 @@ get_libs() {
 }
 
 
-#Add shared libraries to the lofs, and becuase ldd gives not only the pathes, but also some other stuff which 
+#Adding shared libraries to the lofs, and becuase ldd gives not only the pathes, but also some other stuff which 
 #we do not need. That is why using cp can give us error, and to avoid that I am forwarding them to errors_log.txt
 sudo cp "/bin/bash" ./lofsdisk/bin 2>erro_logs.txt
 sudo cp -v --parents $(get_libs "/bin/bash") lofsdisk 2>erro_logs.txt
@@ -41,11 +41,17 @@ sudo cp -v --parents $(get_libs "/bin/bash") lofsdisk 2>erro_logs.txt
 
 
 
-
+#Compiling ex1.c
 sudo gcc ex1.c -o lofsdisk/ex1
 
+#Running ex1 with the root directory lofsdisk, and saving in ex1.txt
 sudo chroot lofsdisk ./ex1 > ex1.txt
+
+#Printing new line to ex1.txt
 echo "" >> ex1.txt
+
+#Printing ex1 without changing the root, and saving in ex1.txt
 ./lofsdisk/ex1 >> ex1.txt
 
+#Opening shell to not close the terminal
 $SHELL
